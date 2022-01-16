@@ -41,8 +41,8 @@ class Note:
         self.octave = octave
         assert (self.getMidiNote() >= 0), "Note out of range, (0-127)"
         assert (self.getMidiNote() <= 127), "Note out of range, (0-127)"
-        assert (pitches.__contains__(self.pitch)), f"{self.pitch} is not a valid note"
-        assert (self.pitch != "Cb" and self.octave != -1), "C is the lowest in octave -1"
+        assert (pitches.__contains__(self.pitch)), f"{self.pitch} is not a valid pitch"
+        assert (durations.__contains__(self.duration)), f"{self.duration} is not a valid duration"
 
     def getMidiNote(self):
         midi = pitches[self.pitch] + (12*self.octave)
