@@ -53,22 +53,32 @@ time_signatures = {
     "4/4": getTicks
 }
 
-class Note:
-    def __init__(self, pitch="C", duration="1/4", octave=3):
-        self.pitch = pitch
+class Rest:
+    def __init__(self, duration="1/4"):
         self.duration = duration
+        assert (durations.__contains__(self.duration)), f"{self.duration} is not a valid duration"
+
+    def getDuration(self):
+        return durations[self.duration]
+
+    def getMidiMessage(self, msg):
+        return None
+
+class Note(Rest):
+    def __init__(self, pitch="C", duration="1/4", octave=3):
+        super(Note,self).__init__(duration)
+        self.pitch = pitch
         self.octave = octave
         assert (self.getMidiNote() >= 0), "Note out of range, (0-127)"
         assert (self.getMidiNote() <= 127), "Note out of range, (0-127)"
         assert (pitches.__contains__(self.pitch)), f"{self.pitch} is not a valid pitch"
-        assert (durations.__contains__(self.duration)), f"{self.duration} is not a valid duration"
 
     def getMidiNote(self):
-        midi = pitches[self.pitch] + (12*self.octave)
+        midi = pitches[self.pitch] + (12 * self.octave)
         return midi
 
-    def getDuration(self):
-        return durations[self.duration]
+    def getMidiMessage(self, msg):
+        return mido.Message(msg,note=self.getMidiNote())
 
 class Song:
     def __init__(self, tempo=100, time_signature="4/4"):
@@ -96,10 +106,10 @@ class Song:
         t = time_signatures[self.time_signature](note)
         for i in range(0, t-1):
             if i == 0:
-                self.append(mido.Message('note_on',note=note.getMidiNote()))
+                self.append(note.getMidiMessage('note_on'))
             else:
                 self.append(None)
-        self.append(mido.Message('note_off',note=note.getMidiNote()))
+        self.append(note.getMidiMessage('note_off'))
 
 port=mido.open_output()
 
@@ -108,7 +118,8 @@ song = Song(tempo=100)
 song.appendNote(Note("C", octave=4, duration="1/4"))
 song.appendNote(Note("D#", octave=4, duration="1/4"))
 song.appendNote(Note("C", octave=4, duration="1/8"))
-song.appendNote(Note("~"))
+song.appendNote(Note("C", octave=4, duration="1/8"))
+song.appendNote(Rest(duration="3/4"))
 song.appendNote(Note("C", octave=4, duration="1/4"))
 
 song.play()
