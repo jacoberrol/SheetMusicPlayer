@@ -36,17 +36,17 @@ durations = {
 
 def getTicks(note):
     if note.duration == "1":
-        return 16
+        return 32
     if note.duration == "3/4":
-        return 12
+        return 24
     if note.duration == "1/2":
-        return 8
+        return 16
     if note.duration == "1/4":
-        return 4
+        return 8
     if note.duration == "1/8":
-        return 2
+        return 4
     if note.duration == "1/16":
-        return 1
+        return 2
 
 
 time_signatures = {
@@ -87,7 +87,7 @@ class Song:
 
     def tick_time(self):
         ts = int(self.time_signature.split("/")[1])
-        return (((60*1000) / self.tempo) / (16 / ts)) / 1000
+        return (((60*1000) / self.tempo) / (8 / ts)) / 1000
 
     def append(self, msg):
         self.ticks.append(msg)
