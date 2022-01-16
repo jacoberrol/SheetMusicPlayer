@@ -1,27 +1,35 @@
 import mido
 import time
 
+from file import Note
+
 
 class Song:
-    def __init__(self, tempo):
+    def __init__(self, tempo=100, time_signature="4/4"):
+        self.tempo = tempo
+        self.time_signature = time_signature
+        self.ticks = []
 
-    def do_tick( tick ):
+    def do_tick(self,tick):
         port.send(tick)
-        time.sleep(tick_time)
+        time.sleep(self.tick_time())
 
-    def play():
-        tick = 0
-        tick_time = 1
-        while True:
-            if tick >= len(song):
-                break
-            do_tick( song[tick] )
-            tick += 1
+    def play(self):
+        for tick in self.ticks:
+            self.do_tick(tick)
 
-port=mido.open_output('IAC Driver Bus 1')
+    def tick_time(self):
+        ts = int(self.time_signature.split("/")[1])
+        return (((60*1000) / self.tempo) / (16 / ts)) / 1000
 
-song = []
-song.append(mido.Message('note_on',note=60))
-song.append(mido.Message('note_on',note=63))
-song.append(mido.Message('note_off',note=60))
-song.append(mido.Message('note_off',note=63))
+    def append(self, msg):
+        self.ticks.append(msg)
+
+port=mido.open_output()
+
+song = Song()
+song.append(Note("C", octave=4).add('note_on'))
+song.append(Note("D#", octave=4).add('note_on'))
+song.append(Note("C", octave=4).add('note_off'))
+song.append(Note("D#", octave=4).add('note_off'))
+song.play()
