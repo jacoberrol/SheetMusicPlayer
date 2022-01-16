@@ -59,7 +59,7 @@ def p_voice(p):
 def p_voice_note(p):
     'voice : VOICE note'
     song.appendNote(p[2], p[1])
-    p[0] = p[1]
+    p[0] = song
 
 
 def p_note(p):
