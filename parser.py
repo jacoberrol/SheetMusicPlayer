@@ -74,7 +74,7 @@ for tok in lexer:
 #result = parser.parse(data)
 #result.play()
 
-file = open('song.sm')
+file = open('song3.sm')
 line = file.readline()
 result = parser.parse(line)
 result.play()
