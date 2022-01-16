@@ -34,8 +34,6 @@ durations = {
     "1/16": .0625
 }
 
-
-
 def getTicks(note):
     if note.duration == "1":
         return 16
@@ -80,11 +78,12 @@ class Song:
 
     def do_tick(self,tick):
         port.send(tick)
-        time.sleep(self.tick_time())
 
     def play(self):
         for tick in self.ticks:
-            self.do_tick(tick)
+            if( tick is not None):
+                self.do_tick(tick)
+            time.sleep(self.tick_time())
 
     def tick_time(self):
         ts = int(self.time_signature.split("/")[1])
@@ -98,14 +97,18 @@ class Song:
         for i in range(0, t-1):
             if i == 0:
                 self.append(mido.Message('note_on',note=note.getMidiNote()))
+            else:
+                self.append(None)
         self.append(mido.Message('note_off',note=note.getMidiNote()))
 
 port=mido.open_output()
 
 song = Song(tempo=100)
 
-song.appendNote(Note("C", octave=4))
-song.appendNote(Note("D#", octave=4))
-song.appendNote(Note("C", octave=4))
-song.appendNote(Note("D#", octave=4))
+song.appendNote(Note("C", octave=4, duration="1/4"))
+song.appendNote(Note("D#", octave=4, duration="1/4"))
+song.appendNote(Note("C", octave=4, duration="1/8"))
+song.appendNote(Note("C", octave=4, duration="1/8"))
+song.appendNote(Note("D#", octave=4, duration="1/4"))
+
 song.play()
