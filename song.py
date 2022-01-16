@@ -81,7 +81,7 @@ class Song:
 
     def play(self):
         for tick in self.ticks:
-            if( tick is not None):
+            if tick is not None:
                 self.do_tick(tick)
             time.sleep(self.tick_time())
 
