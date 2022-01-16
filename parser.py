@@ -4,12 +4,12 @@ import ply.yacc as yacc
 from song import Song
 from song import Note
 
-tokens = (
+tokens = [
     'WHOLE_DURATION',
     'FRACTIONAL_DURATION',
     'PITCH',
     'OCTAVE'
-)
+]
 
 t_WHOLE_DURATION = r'1'
 t_FRACTIONAL_DURATION = r'\([1]/[2|4|8|16]\)?'
@@ -70,11 +70,11 @@ for tok in lexer:
 
 ## TEST PARSER
 
-while True:
-    try:
-        s = input('notes >')
-    except EOFError:
-        break
-    if not s: continue
-    result = parser.parse(s)
-    result.play()
+
+#result = parser.parse(data)
+#result.play()
+
+file = open('song.sm')
+line = file.readline()
+result = parser.parse(line)
+result.play()
