@@ -27,8 +27,8 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> song","S'",1,None,None,None),
-  ('song -> song note','song',2,'p_song','parser.py',37),
-  ('song -> note','song',1,'p_song_note','parser.py',43),
-  ('note -> FRACTIONAL_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',50),
-  ('note -> WHOLE_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',51),
+  ('song -> song note','song',2,'p_song','parser.py',35),
+  ('song -> note','song',1,'p_song_note','parser.py',41),
+  ('note -> FRACTIONAL_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',48),
+  ('note -> WHOLE_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',49),
 ]
