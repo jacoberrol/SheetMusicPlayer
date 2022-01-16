@@ -3,11 +3,13 @@ import ply.yacc as yacc
 
 from song import Song
 from song import Note
+from song import Rest
 
 tokens = [
     'WHOLE_DURATION',
     'FRACTIONAL_DURATION',
     'PITCH',
+    'REST',
     'OCTAVE',
     'VOICE'
 ]
@@ -15,6 +17,7 @@ tokens = [
 t_WHOLE_DURATION = r'1'
 t_FRACTIONAL_DURATION = r'\([1]/[1|2|4|8]6*\)?'
 t_PITCH = r'[A-G][#|b]*'
+t_REST = r'R'
 
 def t_OCTAVE(t):
     r'[-1-9]'
@@ -51,21 +54,27 @@ def p_song_voice(p):
     p[0] = song
 
 def p_voice(p):
-    'voice : voice note'
+    '''voice : voice note
+             | voice rest'''
     song.appendNote(p[2], p[1])
-    p[0] = song
+    p[0] = p[1]
 
 
 def p_voice_note(p):
-    'voice : VOICE note'
+    '''voice : VOICE note
+             | VOICE rest'''
     song.appendNote(p[2], p[1])
-    p[0] = song
-
+    p[0] = p[1]
 
 def p_note(p):
     '''note : FRACTIONAL_DURATION PITCH OCTAVE
             | WHOLE_DURATION PITCH OCTAVE'''
     p[0] = Note(p[2], duration=remove_parens(p[1]), octave=p[3])
+
+def p_rest(p):
+    '''rest : FRACTIONAL_DURATION REST
+            | WHOLE_DURATION REST'''
+    p[0] = Rest(duration=remove_parens(p[1]))
 
 
 # Error rule for syntax errors

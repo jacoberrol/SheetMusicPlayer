@@ -6,24 +6,30 @@ Rule 0     S' -> song
 Rule 1     song -> song voice
 Rule 2     song -> voice
 Rule 3     voice -> voice note
-Rule 4     voice -> VOICE note
-Rule 5     note -> FRACTIONAL_DURATION PITCH OCTAVE
-Rule 6     note -> WHOLE_DURATION PITCH OCTAVE
+Rule 4     voice -> voice rest
+Rule 5     voice -> VOICE note
+Rule 6     voice -> VOICE rest
+Rule 7     note -> FRACTIONAL_DURATION PITCH OCTAVE
+Rule 8     note -> WHOLE_DURATION PITCH OCTAVE
+Rule 9     rest -> FRACTIONAL_DURATION REST
+Rule 10    rest -> WHOLE_DURATION REST
 
 Terminals, with rules where they appear
 
-FRACTIONAL_DURATION  : 5
-OCTAVE               : 5 6
-PITCH                : 5 6
-VOICE                : 4
-WHOLE_DURATION       : 6
+FRACTIONAL_DURATION  : 7 9
+OCTAVE               : 7 8
+PITCH                : 7 8
+REST                 : 9 10
+VOICE                : 5 6
+WHOLE_DURATION       : 8 10
 error                : 
 
 Nonterminals, with rules where they appear
 
-note                 : 3 4
+note                 : 3 5
+rest                 : 4 6
 song                 : 1 0
-voice                : 1 2 3
+voice                : 1 2 3 4
 
 Parsing method: LALR
 
@@ -33,7 +39,9 @@ state 0
     (1) song -> . song voice
     (2) song -> . voice
     (3) voice -> . voice note
-    (4) voice -> . VOICE note
+    (4) voice -> . voice rest
+    (5) voice -> . VOICE note
+    (6) voice -> . VOICE rest
 
     VOICE           shift and go to state 3
 
@@ -45,7 +53,9 @@ state 1
     (0) S' -> song .
     (1) song -> song . voice
     (3) voice -> . voice note
-    (4) voice -> . VOICE note
+    (4) voice -> . voice rest
+    (5) voice -> . VOICE note
+    (6) voice -> . VOICE rest
 
     VOICE           shift and go to state 3
 
@@ -55,40 +65,52 @@ state 2
 
     (2) song -> voice .
     (3) voice -> voice . note
-    (5) note -> . FRACTIONAL_DURATION PITCH OCTAVE
-    (6) note -> . WHOLE_DURATION PITCH OCTAVE
+    (4) voice -> voice . rest
+    (7) note -> . FRACTIONAL_DURATION PITCH OCTAVE
+    (8) note -> . WHOLE_DURATION PITCH OCTAVE
+    (9) rest -> . FRACTIONAL_DURATION REST
+    (10) rest -> . WHOLE_DURATION REST
 
     VOICE           reduce using rule 2 (song -> voice .)
     $end            reduce using rule 2 (song -> voice .)
-    FRACTIONAL_DURATION shift and go to state 6
-    WHOLE_DURATION  shift and go to state 7
+    FRACTIONAL_DURATION shift and go to state 7
+    WHOLE_DURATION  shift and go to state 8
 
     note                           shift and go to state 5
+    rest                           shift and go to state 6
 
 state 3
 
-    (4) voice -> VOICE . note
-    (5) note -> . FRACTIONAL_DURATION PITCH OCTAVE
-    (6) note -> . WHOLE_DURATION PITCH OCTAVE
+    (5) voice -> VOICE . note
+    (6) voice -> VOICE . rest
+    (7) note -> . FRACTIONAL_DURATION PITCH OCTAVE
+    (8) note -> . WHOLE_DURATION PITCH OCTAVE
+    (9) rest -> . FRACTIONAL_DURATION REST
+    (10) rest -> . WHOLE_DURATION REST
 
-    FRACTIONAL_DURATION shift and go to state 6
-    WHOLE_DURATION  shift and go to state 7
+    FRACTIONAL_DURATION shift and go to state 7
+    WHOLE_DURATION  shift and go to state 8
 
-    note                           shift and go to state 8
+    note                           shift and go to state 9
+    rest                           shift and go to state 10
 
 state 4
 
     (1) song -> song voice .
     (3) voice -> voice . note
-    (5) note -> . FRACTIONAL_DURATION PITCH OCTAVE
-    (6) note -> . WHOLE_DURATION PITCH OCTAVE
+    (4) voice -> voice . rest
+    (7) note -> . FRACTIONAL_DURATION PITCH OCTAVE
+    (8) note -> . WHOLE_DURATION PITCH OCTAVE
+    (9) rest -> . FRACTIONAL_DURATION REST
+    (10) rest -> . WHOLE_DURATION REST
 
     VOICE           reduce using rule 1 (song -> song voice .)
     $end            reduce using rule 1 (song -> song voice .)
-    FRACTIONAL_DURATION shift and go to state 6
-    WHOLE_DURATION  shift and go to state 7
+    FRACTIONAL_DURATION shift and go to state 7
+    WHOLE_DURATION  shift and go to state 8
 
     note                           shift and go to state 5
+    rest                           shift and go to state 6
 
 state 5
 
@@ -102,58 +124,102 @@ state 5
 
 state 6
 
-    (5) note -> FRACTIONAL_DURATION . PITCH OCTAVE
+    (4) voice -> voice rest .
 
-    PITCH           shift and go to state 9
+    FRACTIONAL_DURATION reduce using rule 4 (voice -> voice rest .)
+    WHOLE_DURATION  reduce using rule 4 (voice -> voice rest .)
+    VOICE           reduce using rule 4 (voice -> voice rest .)
+    $end            reduce using rule 4 (voice -> voice rest .)
 
 
 state 7
 
-    (6) note -> WHOLE_DURATION . PITCH OCTAVE
+    (7) note -> FRACTIONAL_DURATION . PITCH OCTAVE
+    (9) rest -> FRACTIONAL_DURATION . REST
 
-    PITCH           shift and go to state 10
+    PITCH           shift and go to state 11
+    REST            shift and go to state 12
 
 
 state 8
 
-    (4) voice -> VOICE note .
+    (8) note -> WHOLE_DURATION . PITCH OCTAVE
+    (10) rest -> WHOLE_DURATION . REST
 
-    FRACTIONAL_DURATION reduce using rule 4 (voice -> VOICE note .)
-    WHOLE_DURATION  reduce using rule 4 (voice -> VOICE note .)
-    VOICE           reduce using rule 4 (voice -> VOICE note .)
-    $end            reduce using rule 4 (voice -> VOICE note .)
+    PITCH           shift and go to state 13
+    REST            shift and go to state 14
 
 
 state 9
 
-    (5) note -> FRACTIONAL_DURATION PITCH . OCTAVE
+    (5) voice -> VOICE note .
 
-    OCTAVE          shift and go to state 11
+    FRACTIONAL_DURATION reduce using rule 5 (voice -> VOICE note .)
+    WHOLE_DURATION  reduce using rule 5 (voice -> VOICE note .)
+    VOICE           reduce using rule 5 (voice -> VOICE note .)
+    $end            reduce using rule 5 (voice -> VOICE note .)
 
 
 state 10
 
-    (6) note -> WHOLE_DURATION PITCH . OCTAVE
+    (6) voice -> VOICE rest .
 
-    OCTAVE          shift and go to state 12
+    FRACTIONAL_DURATION reduce using rule 6 (voice -> VOICE rest .)
+    WHOLE_DURATION  reduce using rule 6 (voice -> VOICE rest .)
+    VOICE           reduce using rule 6 (voice -> VOICE rest .)
+    $end            reduce using rule 6 (voice -> VOICE rest .)
 
 
 state 11
 
-    (5) note -> FRACTIONAL_DURATION PITCH OCTAVE .
+    (7) note -> FRACTIONAL_DURATION PITCH . OCTAVE
 
-    FRACTIONAL_DURATION reduce using rule 5 (note -> FRACTIONAL_DURATION PITCH OCTAVE .)
-    WHOLE_DURATION  reduce using rule 5 (note -> FRACTIONAL_DURATION PITCH OCTAVE .)
-    VOICE           reduce using rule 5 (note -> FRACTIONAL_DURATION PITCH OCTAVE .)
-    $end            reduce using rule 5 (note -> FRACTIONAL_DURATION PITCH OCTAVE .)
+    OCTAVE          shift and go to state 15
 
 
 state 12
 
-    (6) note -> WHOLE_DURATION PITCH OCTAVE .
+    (9) rest -> FRACTIONAL_DURATION REST .
 
-    FRACTIONAL_DURATION reduce using rule 6 (note -> WHOLE_DURATION PITCH OCTAVE .)
-    WHOLE_DURATION  reduce using rule 6 (note -> WHOLE_DURATION PITCH OCTAVE .)
-    VOICE           reduce using rule 6 (note -> WHOLE_DURATION PITCH OCTAVE .)
-    $end            reduce using rule 6 (note -> WHOLE_DURATION PITCH OCTAVE .)
+    FRACTIONAL_DURATION reduce using rule 9 (rest -> FRACTIONAL_DURATION REST .)
+    WHOLE_DURATION  reduce using rule 9 (rest -> FRACTIONAL_DURATION REST .)
+    VOICE           reduce using rule 9 (rest -> FRACTIONAL_DURATION REST .)
+    $end            reduce using rule 9 (rest -> FRACTIONAL_DURATION REST .)
+
+
+state 13
+
+    (8) note -> WHOLE_DURATION PITCH . OCTAVE
+
+    OCTAVE          shift and go to state 16
+
+
+state 14
+
+    (10) rest -> WHOLE_DURATION REST .
+
+    FRACTIONAL_DURATION reduce using rule 10 (rest -> WHOLE_DURATION REST .)
+    WHOLE_DURATION  reduce using rule 10 (rest -> WHOLE_DURATION REST .)
+    VOICE           reduce using rule 10 (rest -> WHOLE_DURATION REST .)
+    $end            reduce using rule 10 (rest -> WHOLE_DURATION REST .)
+
+
+state 15
+
+    (7) note -> FRACTIONAL_DURATION PITCH OCTAVE .
+
+    FRACTIONAL_DURATION reduce using rule 7 (note -> FRACTIONAL_DURATION PITCH OCTAVE .)
+    WHOLE_DURATION  reduce using rule 7 (note -> FRACTIONAL_DURATION PITCH OCTAVE .)
+    VOICE           reduce using rule 7 (note -> FRACTIONAL_DURATION PITCH OCTAVE .)
+    $end            reduce using rule 7 (note -> FRACTIONAL_DURATION PITCH OCTAVE .)
+
+
+state 16
+
+    (8) note -> WHOLE_DURATION PITCH OCTAVE .
+
+    FRACTIONAL_DURATION reduce using rule 8 (note -> WHOLE_DURATION PITCH OCTAVE .)
+    WHOLE_DURATION  reduce using rule 8 (note -> WHOLE_DURATION PITCH OCTAVE .)
+    VOICE           reduce using rule 8 (note -> WHOLE_DURATION PITCH OCTAVE .)
+    $end            reduce using rule 8 (note -> WHOLE_DURATION PITCH OCTAVE .)
 
