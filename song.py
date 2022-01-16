@@ -95,12 +95,19 @@ class Song:
     def play(self):
         tick_pos = 0
         while True:
+            print(f"While >> Tick_Pos: {tick_pos}")
+            played = 0
             for tick in self.ticks:
-                if tick[tick_pos] is not None:
-                    self.do_tick(tick[tick_pos])
-                if tick_pos <= len(tick):
-                    break
+                print(f"For >> Len: {len(tick)}")
+                if len(tick) > tick_pos:
+                    if tick[tick_pos] is not None:
+                        print(f"If >> Pitch {tick[tick_pos]}")
+                        self.do_tick(tick[tick_pos])
+                    else:
+                        print(f"If >> None")
+                    played += 1
             tick_pos += 1
+            if played == 0: break
             time.sleep(self.tick_time())
 
     def tick_time(self):
@@ -116,7 +123,7 @@ class Song:
             if i == 0:
                 self.append(note.getMidiMessage('note_on'), voice=voice)
             else:
-                self.append(None)
+                self.append(None, voice=voice)
         self.append(note.getMidiMessage('note_off'), voice=voice)
 
 def test():
@@ -134,6 +141,18 @@ def test():
     song.appendNote(Note("D#", octave=4, duration="1/4"))
     song.appendNote(Note("C", octave=4, duration="1/8"))
     song.appendNote(Note("C", octave=4, duration="1/8"))
+
+    song.appendNote(Note("E", octave=4, duration="1/4"), 1)
+    song.appendNote(Note("G", octave=4, duration="1/4"), 1)
+    song.appendNote(Note("E", octave=4, duration="1/8"), 1)
+    song.appendNote(Note("E", octave=4, duration="1/8"), 1)
+    song.appendNote(Rest(duration="1/8"), 1)
+    song.appendNote(Note("E", octave=4, duration="1/16"), 1)
+    song.appendNote(Note("E", octave=4, duration="1/16"), 1)
+    song.appendNote(Note("E", octave=4, duration="1/4"), 1)
+    song.appendNote(Note("G", octave=4, duration="1/4"), 1)
+    song.appendNote(Note("E", octave=4, duration="1/8"), 1)
+    song.appendNote(Note("E", octave=4, duration="1/8"), 1)
 
     song.play()
 
