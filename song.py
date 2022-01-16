@@ -34,6 +34,27 @@ durations = {
     "1/16": .0625
 }
 
+
+
+def getTicks(note):
+    if (note.duration == "1"):
+        return 16
+    if (note.duration == "3/4"):
+        return 12
+    if (note.duration == "1/2"):
+        return 8
+    if (note.duration == "1/4"):
+        return 4
+    if (note.duration == "1/8"):
+        return 2
+    if (note.duration == "1/16"):
+        return 1
+
+
+time_signatures = {
+    "4/4": getTicks
+}
+
 class Note:
     def __init__(self, pitch="C", duration="1/4", octave=3):
         self.pitch = pitch
@@ -51,8 +72,8 @@ class Note:
     def getDuration(self):
         return durations[self.duration]
 
-    def add(self, mess):
-        return mido.Message(mess, note=self.getMidiNote())
+#    def add(self, mess):
+#        return mido.Message(mess, note=self.getMidiNote())
 
 class Song:
     def __init__(self, tempo=100, time_signature="4/4"):
@@ -75,11 +96,18 @@ class Song:
     def append(self, msg):
         self.ticks.append(msg)
 
+    def appendNote(self,note):
+        t = time_signatures[self.time_signature](note)
+        for i in range(0, t-1):
+            self.append(mido.Message('note_on',note=note.getMidiNote()))
+        self.append(mido.Message('note_off',note=note.getMidiNote()))
+
 port=mido.open_output()
 
-song = Song()
-song.append(Note("C", octave=4).add('note_on'))
-song.append(Note("D#", octave=4).add('note_on'))
-song.append(Note("C", octave=4).add('note_off'))
-song.append(Note("D#", octave=4).add('note_off'))
+song = Song(tempo=200)
+
+song.appendNote(Note("C", octave=4))
+song.appendNote(Note("D#", octave=4))
+song.appendNote(Note("C", octave=4))
+song.appendNote(Note("D#", octave=4))
 song.play()
