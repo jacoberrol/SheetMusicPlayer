@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'PITCHsong : song notesong : notenote : PITCH'
+_lr_signature = 'FRACTIONAL_DURATION OCTAVE PITCH WHOLE_DURATIONsong : song notesong : notenote : FRACTIONAL_DURATION PITCH OCTAVE\n            | WHOLE_DURATION PITCH OCTAVE'
     
-_lr_action_items = {'PITCH':([0,1,2,3,4,],[3,3,-2,-3,-1,]),'$end':([1,2,3,4,],[0,-2,-3,-1,]),}
+_lr_action_items = {'FRACTIONAL_DURATION':([0,1,2,5,8,9,],[3,3,-2,-1,-3,-4,]),'WHOLE_DURATION':([0,1,2,5,8,9,],[4,4,-2,-1,-3,-4,]),'$end':([1,2,5,8,9,],[0,-2,-1,-3,-4,]),'PITCH':([3,4,],[6,7,]),'OCTAVE':([6,7,],[8,9,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'song':([0,],[1,]),'note':([0,1,],[2,4,]),}
+_lr_goto_items = {'song':([0,],[1,]),'note':([0,1,],[2,5,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,7 +27,8 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> song","S'",1,None,None,None),
-  ('song -> song note','song',2,'p_song','parser.py',22),
-  ('song -> note','song',1,'p_song_note','parser.py',28),
-  ('note -> PITCH','note',1,'p_note','parser.py',35),
+  ('song -> song note','song',2,'p_song','parser.py',35),
+  ('song -> note','song',1,'p_song_note','parser.py',41),
+  ('note -> FRACTIONAL_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',48),
+  ('note -> WHOLE_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',49),
 ]
