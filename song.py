@@ -87,7 +87,7 @@ class Song:
 
     def tick_time(self):
         ts = int(self.time_signature.split("/")[1])
-        return (((60*1000) / self.tempo) / (8 / ts)) / 1000
+        return (((60*1000) / self.tempo) / (32 / ts)) / 1000
 
     def append(self, msg):
         self.ticks.append(msg)
