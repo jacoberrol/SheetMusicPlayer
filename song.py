@@ -22,7 +22,8 @@ pitches = {
     "A#": 22,
     "Bb": 22,
     "B": 23,
-    "B#": 24
+    "B#": 24,
+    "~": 128
 }
 
 durations = {
@@ -87,7 +88,7 @@ class Song:
 
     def tick_time(self):
         ts = int(self.time_signature.split("/")[1])
-        return (((60*1000) / self.tempo) / (8 / ts)) / 1000
+        return (((60*1000) / self.tempo) / (32 / ts)) / 1000
 
     def append(self, msg):
         self.ticks.append(msg)
@@ -109,6 +110,11 @@ song.appendNote(Note("C", octave=4, duration="1/4"))
 song.appendNote(Note("D#", octave=4, duration="1/4"))
 song.appendNote(Note("C", octave=4, duration="1/8"))
 song.appendNote(Note("C", octave=4, duration="1/8"))
+song.appendNote(Note("D#", octave=4, duration="1/16"))
+song.appendNote(Note("D#", octave=4, duration="1/16"))
+song.appendNote(Note("C", octave=4, duration="1/8"))
+song.appendNote(Note("C", octave=4, duration="1/8"))
 song.appendNote(Note("D#", octave=4, duration="1/4"))
+song.appendNote(Note("C", octave=4, duration="1/4"))
 
 song.play()
