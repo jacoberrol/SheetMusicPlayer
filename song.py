@@ -96,12 +96,13 @@ class Song:
     def appendNote(self,note):
         t = time_signatures[self.time_signature](note)
         for i in range(0, t-1):
-            self.append(mido.Message('note_on',note=note.getMidiNote()))
+            if i == 0:
+                self.append(mido.Message('note_on',note=note.getMidiNote()))
         self.append(mido.Message('note_off',note=note.getMidiNote()))
 
 port=mido.open_output()
 
-song = Song(tempo=200)
+song = Song(tempo=100)
 
 song.appendNote(Note("C", octave=4))
 song.appendNote(Note("D#", octave=4))
