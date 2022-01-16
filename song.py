@@ -37,17 +37,17 @@ durations = {
 
 
 def getTicks(note):
-    if (note.duration == "1"):
+    if note.duration == "1":
         return 16
-    if (note.duration == "3/4"):
+    if note.duration == "3/4":
         return 12
-    if (note.duration == "1/2"):
+    if note.duration == "1/2":
         return 8
-    if (note.duration == "1/4"):
+    if note.duration == "1/4":
         return 4
-    if (note.duration == "1/8"):
+    if note.duration == "1/8":
         return 2
-    if (note.duration == "1/16"):
+    if note.duration == "1/16":
         return 1
 
 
@@ -71,9 +71,6 @@ class Note:
 
     def getDuration(self):
         return durations[self.duration]
-
-#    def add(self, mess):
-#        return mido.Message(mess, note=self.getMidiNote())
 
 class Song:
     def __init__(self, tempo=100, time_signature="4/4"):
