@@ -23,7 +23,6 @@ pitches = {
     "Bb": 22,
     "B": 23,
     "B#": 24,
-    "~": 128
 }
 
 durations = {
@@ -109,12 +108,7 @@ song = Song(tempo=100)
 song.appendNote(Note("C", octave=4, duration="1/4"))
 song.appendNote(Note("D#", octave=4, duration="1/4"))
 song.appendNote(Note("C", octave=4, duration="1/8"))
-song.appendNote(Note("C", octave=4, duration="1/8"))
-song.appendNote(Note("D#", octave=4, duration="1/16"))
-song.appendNote(Note("D#", octave=4, duration="1/16"))
-song.appendNote(Note("C", octave=4, duration="1/8"))
-song.appendNote(Note("C", octave=4, duration="1/8"))
-song.appendNote(Note("D#", octave=4, duration="1/4"))
+song.appendNote(Note("~"))
 song.appendNote(Note("C", octave=4, duration="1/4"))
 
 song.play()
