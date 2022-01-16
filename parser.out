@@ -1,0 +1,66 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> song
+Rule 1     song -> song note
+Rule 2     song -> note
+Rule 3     note -> PITCH
+
+Terminals, with rules where they appear
+
+PITCH                : 3
+error                : 
+
+Nonterminals, with rules where they appear
+
+note                 : 1 2
+song                 : 1 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . song
+    (1) song -> . song note
+    (2) song -> . note
+    (3) note -> . PITCH
+
+    PITCH           shift and go to state 3
+
+    song                           shift and go to state 1
+    note                           shift and go to state 2
+
+state 1
+
+    (0) S' -> song .
+    (1) song -> song . note
+    (3) note -> . PITCH
+
+    PITCH           shift and go to state 3
+
+    note                           shift and go to state 4
+
+state 2
+
+    (2) song -> note .
+
+    PITCH           reduce using rule 2 (song -> note .)
+    $end            reduce using rule 2 (song -> note .)
+
+
+state 3
+
+    (3) note -> PITCH .
+
+    PITCH           reduce using rule 3 (note -> PITCH .)
+    $end            reduce using rule 3 (note -> PITCH .)
+
+
+state 4
+
+    (1) song -> song note .
+
+    PITCH           reduce using rule 1 (song -> song note .)
+    $end            reduce using rule 1 (song -> song note .)
+

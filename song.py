@@ -82,12 +82,13 @@ class Song:
 
     def __init__(self, tempo=100, time_signature="4/4"):
         assert(Song.time_signatures.__contains__(time_signature)), f"{time_signature} is not a valid time signature"
+        self.port=mido.open_output()
         self.tempo = tempo
         self.time_signature = time_signature
         self.ticks = []
 
     def do_tick(self,tick):
-        port.send(tick)
+        self.port.send(tick)
 
     def play(self):
         for tick in self.ticks:
@@ -111,20 +112,22 @@ class Song:
                 self.append(None)
         self.append(note.getMidiMessage('note_off'))
 
-port=mido.open_output()
+def test():
 
-song = Song(tempo=100)
+    song = Song(tempo=100)
 
-song.appendNote(Note("C", octave=4, duration="1/4"))
-song.appendNote(Note("D#", octave=4, duration="1/4"))
-song.appendNote(Note("C", octave=4, duration="1/8"))
-song.appendNote(Note("C", octave=4, duration="1/8"))
-song.appendNote(Rest(duration="1/8"))
-song.appendNote(Note("C", octave=4, duration="1/16"))
-song.appendNote(Note("C", octave=4, duration="1/16"))
-song.appendNote(Note("C", octave=4, duration="1/4"))
-song.appendNote(Note("D#", octave=4, duration="1/4"))
-song.appendNote(Note("C", octave=4, duration="1/8"))
-song.appendNote(Note("C", octave=4, duration="1/8"))
+    song.appendNote(Note("C", octave=4, duration="1/4"))
+    song.appendNote(Note("D#", octave=4, duration="1/4"))
+    song.appendNote(Note("C", octave=4, duration="1/8"))
+    song.appendNote(Note("C", octave=4, duration="1/8"))
+    song.appendNote(Rest(duration="1/8"))
+    song.appendNote(Note("C", octave=4, duration="1/16"))
+    song.appendNote(Note("C", octave=4, duration="1/16"))
+    song.appendNote(Note("C", octave=4, duration="1/4"))
+    song.appendNote(Note("D#", octave=4, duration="1/4"))
+    song.appendNote(Note("C", octave=4, duration="1/8"))
+    song.appendNote(Note("C", octave=4, duration="1/8"))
 
-song.play()
+    song.play()
+
+# test()

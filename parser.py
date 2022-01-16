@@ -1,6 +1,9 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
+from song import Song
+from song import Note
+
 tokens = [
     'PITCH'
 ]
@@ -18,15 +21,30 @@ def t_error(t):
 lexer = lex.lex()
 
 
-def p_expression_song(p):
-    'song : song pitch'
-
-def p_expression_note(p):
-    'note : PITCH'
+def p_song(p):
+    'song : song note'
+    p[1].appendNote(Note(p[2], octave=4, duration="1/4"))
     p[0] = p[1]
 
 
-## TEST
+def p_song_note(p):
+    'song : note'
+    song = Song(tempo=100)
+    song.appendNote(Note(p[1], octave=4, duration="1/4"))
+    p[0] = song
+
+
+def p_note(p):
+    'note : PITCH'
+    p[0] = p[1]
+
+# Error rule for syntax errors
+def p_error(p):
+    print("Syntax error in input!")
+
+parser = yacc.yacc()
+
+## TEST LEXER
 
 data = 'C D E F G A B C'
 
@@ -34,3 +52,9 @@ lexer.input(data)
 
 for tok in lexer:
     print(tok)
+
+
+## TEST PARSER
+
+result = parser.parse(data)
+result.play()
