@@ -80,37 +80,44 @@ class Song:
         "4/4": __getTicks__
     }
 
-    def __init__(self, tempo=100, time_signature="4/4"):
+    def __init__(self, tempo=100, time_signature="4/4", voices: int = 16):
         assert(Song.time_signatures.__contains__(time_signature)), f"{time_signature} is not a valid time signature"
         self.port=mido.open_output()
         self.tempo = tempo
         self.time_signature = time_signature
         self.ticks = []
+        for i in range(0,voices):
+            self.ticks.append([])
 
     def do_tick(self,tick):
         self.port.send(tick)
 
     def play(self):
-        for tick in self.ticks:
-            if tick is not None:
-                self.do_tick(tick)
+        tick_pos = 0
+        while True:
+            for tick in self.ticks:
+                if tick[tick_pos] is not None:
+                    self.do_tick(tick[tick_pos])
+                if tick_pos <= len(tick):
+                    break
+            tick_pos += 1
             time.sleep(self.tick_time())
 
     def tick_time(self):
         ts = int(self.time_signature.split("/")[1])
         return (((60*1000) / self.tempo) / (32 / ts)) / 1000
 
-    def append(self, msg):
-        self.ticks.append(msg)
+    def append(self, msg, voice: int = 0):
+        self.ticks[voice].append(msg)
 
-    def appendNote(self,note):
+    def appendNote(self,note, voice: int = 0):
         t = Song.time_signatures[self.time_signature](note)
         for i in range(0, t-1):
             if i == 0:
-                self.append(note.getMidiMessage('note_on'))
+                self.append(note.getMidiMessage('note_on'), voice=voice)
             else:
                 self.append(None)
-        self.append(note.getMidiMessage('note_off'))
+        self.append(note.getMidiMessage('note_off'), voice=voice)
 
 def test():
 
@@ -130,4 +137,4 @@ def test():
 
     song.play()
 
-# test()
+test()
