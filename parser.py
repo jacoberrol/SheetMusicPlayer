@@ -85,9 +85,9 @@ parser = yacc.yacc()
 
 ## TEST LEXER
 
-data = '[0](1/4)C3 (1/8)C#3 (1/8)D3 (1/4)Eb3 (1/8)E3 (1/8)F3 (1/4)F#3 (1/8)G3 (1/8)Ab3 (1/4)A3 (1/8)A#3 (1/8)B3 (1/4)C4'
+# data = '[0](1/4)C3 (1/8)C#3 (1/8)D3 (1/4)Eb3 (1/8)E3 (1/8)F3 (1/4)F#3 (1/8)G3 (1/8)Ab3 (1/4)A3 (1/8)A#3 (1/8)B3 (1/4)C4'
 
-lexer.input(data)
+# lexer.input(data)
 
 #for tok in lexer:
     #print(tok)
