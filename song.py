@@ -95,16 +95,16 @@ class Song:
     def play(self):
         tick_pos = 0
         while True:
-            print(f"While >> Tick_Pos: {tick_pos}")
+            #print(f"While >> Tick_Pos: {tick_pos}")
             played = 0
             for tick in self.ticks:
-                print(f"For >> Len: {len(tick)}")
+                #print(f"For >> Len: {len(tick)}")
                 if len(tick) > tick_pos:
                     if tick[tick_pos] is not None:
-                        print(f"If >> Pitch {tick[tick_pos]}")
+                        #print(f"If >> Pitch {tick[tick_pos]}")
                         self.do_tick(tick[tick_pos])
-                    else:
-                        print(f"If >> None")
+                    #else:
+                        #print(f"If >> None")
                     played += 1
             tick_pos += 1
             if played == 0: break
@@ -156,4 +156,4 @@ def test():
 
     song.play()
 
-test()
+# test()

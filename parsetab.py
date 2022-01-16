@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'FRACTIONAL_DURATION OCTAVE PITCH WHOLE_DURATIONsong : song notesong : notenote : FRACTIONAL_DURATION PITCH OCTAVE\n            | WHOLE_DURATION PITCH OCTAVE'
+_lr_signature = 'FRACTIONAL_DURATION OCTAVE PITCH VOICE WHOLE_DURATIONsong : song voicesong : voicevoice : voice notevoice : VOICE notenote : FRACTIONAL_DURATION PITCH OCTAVE\n            | WHOLE_DURATION PITCH OCTAVE'
     
-_lr_action_items = {'FRACTIONAL_DURATION':([0,1,2,5,8,9,],[3,3,-2,-1,-3,-4,]),'WHOLE_DURATION':([0,1,2,5,8,9,],[4,4,-2,-1,-3,-4,]),'$end':([1,2,5,8,9,],[0,-2,-1,-3,-4,]),'PITCH':([3,4,],[6,7,]),'OCTAVE':([6,7,],[8,9,]),}
+_lr_action_items = {'VOICE':([0,1,2,4,5,8,11,12,],[3,3,-2,-1,-3,-4,-5,-6,]),'$end':([1,2,4,5,8,11,12,],[0,-2,-1,-3,-4,-5,-6,]),'FRACTIONAL_DURATION':([2,3,4,5,8,11,12,],[6,6,6,-3,-4,-5,-6,]),'WHOLE_DURATION':([2,3,4,5,8,11,12,],[7,7,7,-3,-4,-5,-6,]),'PITCH':([6,7,],[9,10,]),'OCTAVE':([9,10,],[11,12,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'song':([0,],[1,]),'note':([0,1,],[2,5,]),}
+_lr_goto_items = {'song':([0,],[1,]),'voice':([0,1,],[2,4,]),'note':([2,3,4,],[5,8,5,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,8 +27,10 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> song","S'",1,None,None,None),
-  ('song -> song note','song',2,'p_song','parser.py',35),
-  ('song -> note','song',1,'p_song_note','parser.py',41),
-  ('note -> FRACTIONAL_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',48),
-  ('note -> WHOLE_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',49),
+  ('song -> song voice','song',2,'p_song','parser.py',44),
+  ('song -> voice','song',1,'p_song_voice','parser.py',48),
+  ('voice -> voice note','voice',2,'p_voice','parser.py',52),
+  ('voice -> VOICE note','voice',2,'p_voice_note','parser.py',58),
+  ('note -> FRACTIONAL_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',65),
+  ('note -> WHOLE_DURATION PITCH OCTAVE','note',3,'p_note','parser.py',66),
 ]

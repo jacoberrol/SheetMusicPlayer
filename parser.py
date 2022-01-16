@@ -8,7 +8,8 @@ tokens = [
     'WHOLE_DURATION',
     'FRACTIONAL_DURATION',
     'PITCH',
-    'OCTAVE'
+    'OCTAVE',
+    'VOICE'
 ]
 
 t_WHOLE_DURATION = r'1'
@@ -20,8 +21,14 @@ def t_OCTAVE(t):
     t.value = int(t.value)
     return t
 
+def t_VOICE(t):
+    r'\[\d+\]'
+    v = t.value.replace('[', '').replace(']', '')
+    t.value = int(v)
+    return t
+
  # A string containing ignored characters (spaces and tabs)
-t_ignore  = ' \t'
+t_ignore  = ' \t\n'
 
 # Error handling rule
 def t_error(t):
@@ -30,20 +37,29 @@ def t_error(t):
 
 lexer = lex.lex()
 
+song = Song(tempo=100)
+
 def remove_parens(str):
     return str.replace("(","").replace(")","")
 
 def p_song(p):
-    'song : song note'
-    p[1].appendNote(p[2])
-    p[0] = p[1]
-
-
-def p_song_note(p):
-    'song : note'
-    song = Song(tempo=100)
-    song.appendNote(p[1])
+    'song : song voice'
     p[0] = song
+
+def p_song_voice(p):
+    'song : voice'
+    p[0] = song
+
+def p_voice(p):
+    'voice : voice note'
+    song.appendNote(p[2], p[1])
+    p[0] = song
+
+
+def p_voice_note(p):
+    'voice : VOICE note'
+    song.appendNote(p[2], p[1])
+    p[0] = p[1]
 
 
 def p_note(p):
@@ -60,12 +76,12 @@ parser = yacc.yacc()
 
 ## TEST LEXER
 
-data = '(1/4)C3 (1/8)C#3 (1/8)D3 (1/4)Eb3 (1/8)E3 (1/8)F3 (1/4)F#3 (1/8)G3 (1/8)Ab3 (1/4)A3 (1/8)A#3 (1/8)B3 (1/4)C4'
+data = '[0](1/4)C3 (1/8)C#3 (1/8)D3 (1/4)Eb3 (1/8)E3 (1/8)F3 (1/4)F#3 (1/8)G3 (1/8)Ab3 (1/4)A3 (1/8)A#3 (1/8)B3 (1/4)C4'
 
 lexer.input(data)
 
-for tok in lexer:
-    print(tok)
+#for tok in lexer:
+    #print(tok)
 
 
 ## TEST PARSER
@@ -75,6 +91,7 @@ for tok in lexer:
 #result.play()
 
 file = open('song3.sm')
-line = file.readline()
-result = parser.parse(line)
+result = None
+for line in file.readlines():
+    result = parser.parse(line)
 result.play()
