@@ -12,7 +12,7 @@ tokens = [
 ]
 
 t_WHOLE_DURATION = r'1'
-t_FRACTIONAL_DURATION = r'\([1]/[2|4|8|16]\)?'
+t_FRACTIONAL_DURATION = r'\([1]/[1|2|4|8]6*\)?'
 t_PITCH = r'[A-G][#|b]*'
 
 def t_OCTAVE(t):
