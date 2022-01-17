@@ -15,7 +15,7 @@ tokens = [
 ]
 
 t_WHOLE_DURATION = r'1'
-t_FRACTIONAL_DURATION = r'\([1]/[1|2|4|8]6*\)?'
+t_FRACTIONAL_DURATION = r'\([1|3|5|7|9][1|3|5]*/[1|2|4|8]6*\)?'
 t_PITCH = r'[A-G][#|b]*'
 t_REST = r'R'
 

@@ -5,9 +5,19 @@ class Rest:
 
     durations = [
         "1",
-        "1/2",
+        "15/16",
+        "7/8",
+        "13/16",
         "3/4",
+        "11/16",
+        "5/8",
+        "9/16",
+        "1/2",
+        "7/16",
+        "3/8",
+        "5/16",
         "1/4",
+        "3/16",
         "1/8",
         "1/16"
     ]
@@ -65,12 +75,32 @@ class Song:
     def __getTicks__(note):
         if note.duration == "1":
             return 32
+        if note.duration == "15/16":
+            return 30
+        if note.duration == "7/8":
+            return 28
+        if note.duration == "13/16":
+            return 26
         if note.duration == "3/4":
             return 24
+        if note.duration == "11/16":
+            return 22
+        if note.duration == "5/8":
+            return 20
+        if note.duration == "9/16":
+            return 18
         if note.duration == "1/2":
             return 16
+        if note.duration == "7/16":
+            return 14
+        if note.duration == "3/8":
+            return 12
+        if note.duration == "5/16":
+            return 10
         if note.duration == "1/4":
             return 8
+        if note.duration == "3/16":
+            return 6
         if note.duration == "1/8":
             return 4
         if note.duration == "1/16":
