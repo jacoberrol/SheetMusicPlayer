@@ -19,7 +19,11 @@ class Rest:
         "1/4",
         "3/16",
         "1/8",
-        "1/16"
+        "1/16",
+        "1/3",
+        "1/6",
+        "1/12",
+        "1/24"
     ]
 
     def __init__(self, duration="1/4"):
@@ -74,37 +78,46 @@ class Song:
 
     def __getTicks__(note):
         if note.duration == "1":
-            return 32
+            return (32 * 3)
         if note.duration == "15/16":
-            return 30
+            return (30 * 3)
         if note.duration == "7/8":
-            return 28
+            return (28 * 3)
         if note.duration == "13/16":
-            return 26
+            return (26 * 3)
         if note.duration == "3/4":
-            return 24
+            return (24 * 3)
         if note.duration == "11/16":
-            return 22
+            return (22 * 3)
         if note.duration == "5/8":
-            return 20
+            return (20 * 3)
         if note.duration == "9/16":
-            return 18
+            return (18 * 3)
         if note.duration == "1/2":
-            return 16
+            return (16 * 3)
         if note.duration == "7/16":
-            return 14
+            return (14 * 3)
         if note.duration == "3/8":
-            return 12
+            return (12 * 3)
         if note.duration == "5/16":
-            return 10
+            return (10 * 3)
         if note.duration == "1/4":
-            return 8
+            return (8 * 3)
         if note.duration == "3/16":
-            return 6
+            return (6 * 3)
         if note.duration == "1/8":
-            return 4
+            return (4 * 3)
         if note.duration == "1/16":
-            return 2
+            return (2 * 3)
+        if note.duration == "1/3":
+            return 32
+        if note.duration == "1/6":
+            return 16
+        if note.duration == "1/12":
+            return 8
+        if note.duration == "1/24":
+            return 4
+
 
     time_signatures = {
         "4/4": __getTicks__
@@ -140,9 +153,20 @@ class Song:
             if played == 0: break
             time.sleep(self.tick_time())
 
+    # this function returns the amount of time in one tick of the song
+    # in order to support fractional note durations down to 1/16 notes
+    # and triplet 1/4, 1/8, and 1/16 notes we assign 96 ticks to a
+    # whole note
     def tick_time(self):
+        # get the denominator of the time signature (note that gets the beat)
         ts = int(self.time_signature.split("/")[1])
-        return (((60*1000) / self.tempo) / (32 / ts)) / 1000
+        beat = f"1/{ts}"
+        tpb = Song.time_signatures[self.time_signature](Rest(beat))
+        # calculate ms/beat (tempo is in bpm) (60K ms/min) / (X beats/min)
+        mspb = (60*1000) / self.tempo
+        # produces a decimal value seconds/tick
+        spt = mspb / (tpb) / 1000
+        return spt
 
     def append(self, msg, voice: int = 0):
         self.ticks[voice].append(msg)

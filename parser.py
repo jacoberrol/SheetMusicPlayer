@@ -14,8 +14,8 @@ tokens = [
     'VOICE'
 ]
 
-t_WHOLE_DURATION = r'1'
-t_FRACTIONAL_DURATION = r'\([1|3|5|7|9][1|3|5]*/[1|2|4|8]6*\)?'
+t_WHOLE_DURATION = r'\(1\)'
+t_FRACTIONAL_DURATION = r'\([1|3|5|7|9][1|3|5]*/[1|2|3|4|6|8|9][2|4|6]*\)?'
 t_PITCH = r'[A-G][#|b]*'
 t_REST = r'R'
 
@@ -99,7 +99,7 @@ parser = yacc.yacc()
 #result = parser.parse(data)
 #result.play()
 
-file = open('song3.sm')
+file = open('zelda.sm')
 result = None
 for line in file.readlines():
     result = parser.parse(line)
