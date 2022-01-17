@@ -99,7 +99,7 @@ parser = yacc.yacc()
 #result = parser.parse(data)
 #result.play()
 
-file = open('AP.sm')
+file = open('song3.sm')
 result = None
 for line in file.readlines():
     result = parser.parse(line)
