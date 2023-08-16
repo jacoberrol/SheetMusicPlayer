@@ -1,4 +1,5 @@
 # SheetMusicPlayer
+Very basic Python program to teach Oliver how parsers and lexers work.
 
 This program accepts a formatted text file as input (*.sm), which encodes a very simple musical notation, and then plays the encoded song to a MIDI device.
 
